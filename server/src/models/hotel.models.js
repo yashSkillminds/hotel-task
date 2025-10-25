@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.config';
-import { modelNames } from '../constants/constants';
-import User from './user.models';
+import { sequelize } from '../config/db.config.js';
+import { modelNames } from '../constants/constants.js';
+import User from './user.models.js';
 
 const Hotel = sequelize.define(
   modelNames.hotel,

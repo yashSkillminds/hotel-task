@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.config';
-import { modelNames, roomTypes } from '../constants/constants';
-import Hotel from './hotel.models';
+import { sequelize } from '../config/db.config.js';
+import { modelNames, roomTypes } from '../constants/constants.js';
+import Hotel from './hotel.models.js';
 
 const Room = sequelize.define(
   modelNames.room,

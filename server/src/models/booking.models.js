@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.config';
-import { bookingStatus, modelNames } from '../constants/constants';
-import Room from './room.models';
-import User from './user.models';
+import { sequelize } from '../config/db.config.js';
+import { bookingStatus, modelNames } from '../constants/constants.js';
+import Room from './room.models.js';
+import User from './user.models.js';
 
 const Booking = sequelize.define(
   modelNames.booking,

@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.config';
-import { modelNames, paymentStatus } from '../constants/constants';
-import Booking from './booking.models';
+import { sequelize } from '../config/db.config.js';
+import { modelNames, paymentStatus } from '../constants/constants.js';
+import Booking from './booking.models.js';
 
 const Payment = sequelize.define(
   modelNames.payment,
@@ -26,7 +26,11 @@ const Payment = sequelize.define(
     status: {
       type: DataTypes.ENUM,
       allowNull: false,
-      values: [paymentStatus.completed, paymentStatus.pending, paymentStatus.refunded],
+      values: [
+        paymentStatus.completed,
+        paymentStatus.pending,
+        paymentStatus.refunded,
+      ],
       defaultValue: paymentStatus.pending,
     },
   },
