@@ -14,12 +14,12 @@ const app = express();
 // Health Route
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }));
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_ORIGIN,
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_ORIGIN,
+//     credentials: true,
+//   }),
+// );
 app.use(express.json({ limit: SIZE_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: SIZE_LIMIT }));
 app.use(cookieParser());
@@ -31,6 +31,7 @@ app.use(
   }),
 );
 
+app.get('/', (_, res) => res.send('Hello!'));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1', userRouter);
 app.use('/api/v1', adminRouter);

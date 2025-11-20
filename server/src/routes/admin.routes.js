@@ -7,8 +7,10 @@ import { roleMiddleware } from '../middlewares/role.middleware.js';
 import {
   hotelCreateValidations,
   hotelUpdateValidations,
+  roomCreateValidations,
   roomUpdateValidations,
   userRegistrationValidation,
+  uuidValidations,
 } from '../utils/validations.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
 import { uuidValidation } from '../utils/validationRules.js';
@@ -47,7 +49,14 @@ router
 // room
 router
   .route('/hotels/:id/rooms')
-  .post(authMiddleware, roleMiddleware, roomController.createRoom);
+  .post(
+    authMiddleware,
+    roleMiddleware,
+    uuidValidations,
+    roomCreateValidations,
+    validateRequest,
+    roomController.createRoom,
+  );
 router
   .route('/rooms/:id')
   .put(

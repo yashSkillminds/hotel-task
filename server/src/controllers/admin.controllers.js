@@ -3,15 +3,12 @@ import User from '../models/user.models.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { userRegistrationValidation } from '../utils/validations.js';
 import crypto from 'crypto';
 
 export const createAdmin = asyncHandler(async (req, res) => {
   const user = req.user;
 
   if (user.role !== 'admin') throw new ApiError(400, 'Unauthorized access');
-
-  userRegistrationValidation(req);
 
   const { name, email, password } = req.body;
 
@@ -43,19 +40,23 @@ export const updateUserToAdmin = asyncHandler(async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-  
-    if (!user) throw new ApiError(404, "User not found");
-  
+
+    if (!user) throw new ApiError(404, 'User not found');
+
     user.role = userRoles.admin;
-  
+
     await user.save();
 
-    return res.status(200).json(new ApiResponse(200, user, "User role updated successfully!"))
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, 'User role updated successfully!'));
   } catch (error) {
     console.log(error?.message);
-    throw new ApiError(500, "Something went wrong while updating user to admin");
+    throw new ApiError(
+      500,
+      'Something went wrong while updating user to admin',
+    );
   }
-  
 });
 
 export const deleteAdmin = asyncHandler(async (req, res) => {

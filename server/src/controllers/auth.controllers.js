@@ -25,6 +25,15 @@ export const register = asyncHandler(async (req, res) => {
 
   const id = crypto.randomUUID();
 
+  const isExistingUser = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  if (isExistingUser)
+    throw new ApiError(409, 'User with given email address already exists!');
+
   const user = await User.create({
     id,
     name,

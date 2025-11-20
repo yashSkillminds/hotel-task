@@ -62,16 +62,44 @@ export const uuidValidation = param('id')
   .isUUID()
   .withMessage('Invalid UUID format for ID');
 
-export const roomIdValidation = body('room_id').exists().withMessage('Room ID is required').isUUID().withMessage('Invalid UUID format for Room ID');
+export const roomIdValidation = body('room_id')
+  .exists()
+  .withMessage('Room ID is required')
+  .isUUID()
+  .withMessage('Invalid UUID format for Room ID');
 
-export const checkInValidation = body('check_in').exists().withMessage('Check-in date is required').isISO8601().withMessage('Invalid date format for Check-in date');
+export const checkInValidation = body('check_in')
+  .exists()
+  .withMessage('Check-in date is required')
+  .isISO8601()
+  .withMessage('Invalid date format for Check-in date');
 
-export const checkOutValidation = body('check_out').exists().withMessage('Check-out date is required').isISO8601().withMessage('Invalid date format for Check-out date');
+export const checkOutValidation = body('check_out')
+  .exists()
+  .withMessage('Check-out date is required')
+  .isISO8601()
+  .withMessage('Invalid date format for Check-out date');
 
-export const roomNumberValidation = body('room_number').exists().withMessage('Room number is required').isString().withMessage('Invalid room number');
+export const roomNumberValidation = body('room_number')
+  .exists()
+  .withMessage('Room number is required')
+  .isNumeric()
+  .withMessage('Invalid room number');
 
-export const roomTypeValidation = body('type').exists().withMessage('Room type is required').isIn(['single', 'double', 'suite']).withMessage('Invalid room type');
+export const roomTypeValidation = body('type')
+  .exists()
+  .withMessage('Room type is required')
+  .isIn(['single', 'double', 'suite'])
+  .withMessage('Invalid room type');
 
-export const roomPriceValidation = body('price').exists().withMessage('Room price is required').isNumeric().withMessage('Invalid room price');
+export const roomPriceValidation = body('price')
+  .exists()
+  .withMessage('Room price is required')
+  .isNumeric()
+  .withMessage('Invalid room price');
 
-export const roomAvailabilityValidation = body('is_available').exists().withMessage('Room availability is required').isBoolean().withMessage('Invalid room availability');
+export const roomAvailabilityValidation = body('is_available')
+  .exists()
+  .withMessage('Room availability is required')
+  .isBoolean()
+  .withMessage('Invalid room availability');

@@ -1,7 +1,7 @@
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import Booking from "../models/booking.models.js";
+import Booking from '../models/booking.models.js';
 import Payment from '../models/payment.models.js';
 import Room from '../models/room.models.js';
 import { bookingStatus, paymentStatus } from '../constants/constants.js';
@@ -23,24 +23,36 @@ export const createBooking = asyncHandler(async (req, res) => {
     const existingBookings = await Booking.findAll({
       where: { room_id, status: bookingStatus.booked },
       transaction,
-      lock: transaction.LOCK.UPDATE // prevents race conditions
+      lock: transaction.LOCK.UPDATE, // prevents race conditions
     });
 
-    const hasOverlap = existingBookings.some(booking => {
+    const newCheckIn = new Date(check_in);
+    const newCheckOut = new Date(check_out);
+
+    if (newCheckIn >= newCheckOut) {
+      throw new ApiError(400, 'Check-out date must be after check-in date');
+    }
+
+    const hasOverlap = existingBookings.some((booking) => {
       const existingCheckIn = new Date(booking.check_in);
       const existingCheckOut = new Date(booking.check_out);
-      const newCheckIn = new Date(check_in);
-      const newCheckOut = new Date(check_out);
       return newCheckIn < existingCheckOut && newCheckOut > existingCheckIn;
     });
 
     if (hasOverlap) {
-      throw new ApiError(400, "Room is already booked for the selected dates");
+      throw new ApiError(400, 'Room is already booked for the selected dates');
     }
 
     const booking = await Booking.create(
-      { id, user_id, room_id, check_in, check_out, status: bookingStatus.booked },
-      { transaction }
+      {
+        id,
+        user_id,
+        room_id,
+        check_in,
+        check_out,
+        status: bookingStatus.booked,
+      },
+      { transaction },
     );
 
     const paymentAmount = room.price;
@@ -49,9 +61,9 @@ export const createBooking = asyncHandler(async (req, res) => {
         id: paymentId,
         booking_id: booking.id,
         amount: paymentAmount,
-        status: paymentStat || paymentStatus.pending
+        status: paymentStat || paymentStatus.pending,
       },
-      { transaction }
+      { transaction },
     );
 
     room.is_available = false;
@@ -61,40 +73,48 @@ export const createBooking = asyncHandler(async (req, res) => {
 
     return res
       .status(201)
-      .json(new ApiResponse(201, booking, "Booking created successfully"));
+      .json(new ApiResponse(201, booking, 'Booking created successfully'));
   } catch (error) {
     await transaction.rollback();
-    console.error("Booking creation failed:", error.message);
-    throw new ApiError(500, "Something went wrong while creating the booking");
+    console.error('Booking creation failed:', error.message);
+    throw new ApiError(
+      error.statusCode ?? 500,
+      error.message ?? 'Something went wrong while creating the booking',
+    );
   }
 });
 
 export const cancelBooking = asyncHandler(async (req, res) => {
-    const bookingId = req.params?.id;
+  const bookingId = req.params?.id;
 
-    try {
-        const booking = await Booking.findByPk(bookingId);
+  try {
+    const booking = await Booking.findByPk(bookingId);
 
-        if (!booking) throw new ApiError(404, "Booking not found");
+    if (!booking) throw new ApiError(404, 'Booking not found');
 
-        booking.status = bookingStatus.cancelled;
+    booking.status = bookingStatus.cancelled;
 
-        await booking.save();
+    await booking.save();
 
-        const payment = await Payment.findOne({
-            where: {
-                booking_id: bookingId
-            }
-        });
+    const payment = await Payment.findOne({
+      where: {
+        booking_id: bookingId,
+      },
+    });
 
-        if (payment) {
-            payment.status = paymentStatus.refunded;
-            await payment.save();
-        }
-
-        return res.status(200).json(new ApiResponse(200, {}, "Booking cancelled successfully!"))
-    } catch (error) {
-        console.log(error?.message);
-        throw new ApiError(500, "Something went wrong while cancelling the booking")
+    if (payment) {
+      payment.status = paymentStatus.refunded;
+      await payment.save();
     }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, 'Booking cancelled successfully!'));
+  } catch (error) {
+    console.log(error?.message);
+    throw new ApiError(
+      500,
+      'Something went wrong while cancelling the booking',
+    );
+  }
 });

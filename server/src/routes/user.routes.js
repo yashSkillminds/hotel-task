@@ -2,6 +2,7 @@ import express from 'express';
 import * as userController from '../controllers/user.controllers.js';
 import * as hotelController from '../controllers/hotel.controllers.js';
 import * as bookingController from '../controllers/booking.controllers.js';
+import * as roomController from '../controllers/room.controllers.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
 import {
@@ -42,6 +43,16 @@ router
     hotelController.getHotelDetails,
   );
 
+// room
+// router.route('/hotels/:id/rooms').get();
+// router.route('/rooms/:id').get();
+router
+  .route('/hotels/:id/rooms')
+  .get(uuidValidations, validateRequest, roomController.getAllRoomDetails);
+router
+  .route('/rooms/:id')
+  .get(uuidValidations, validateRequest, roomController.getARoomDetails);
+
 // bookings
 router
   .route('/bookings')
@@ -53,7 +64,7 @@ router
   );
 router
   .route('/bookings/:id/cancel')
-  .put(
+  .patch(
     authMiddleware,
     uuidValidations,
     validateRequest,

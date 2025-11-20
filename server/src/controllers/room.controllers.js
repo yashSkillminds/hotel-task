@@ -6,6 +6,59 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import crypto from 'crypto';
 
 /**
+ * @desc    Get all room details under a specific hotel
+ * @route   GET /api/hotels/:id/rooms
+ * @access  Private (Admin)
+ */
+export const getAllRoomDetails = asyncHandler(async (req, res) => {
+  const hotelId = req.params?.id;
+
+  try {
+    const hotel = await Hotel.findByPk(hotelId);
+    if (!hotel) throw new ApiError(404, 'Hotel not found');
+
+    const rooms = await Room.findAll({
+      where: { hotel_id: hotelId },
+      order: [['room_number', 'ASC']],
+    });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, rooms, 'Rooms fetched successfully'));
+  } catch (error) {
+    console.error('Get all Room Details Error:', error?.message);
+    throw new ApiError(500, 'Something went wrong while fetching room details');
+  }
+});
+
+/**
+ * @desc    Get details of a specific room
+ * @route   GET /api/rooms/:id
+ * @access  Private (Admin)
+ */
+export const getARoomDetails = asyncHandler(async (req, res) => {
+  const roomId = req.params?.id;
+
+  try {
+    const room = await Room.findByPk(roomId);
+    if (!room) throw new ApiError(404, 'Room not found');
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          room,
+          'All Room details of the given Hotel fetched successfully',
+        ),
+      );
+  } catch (error) {
+    console.error('Get a Room Details Error:', error?.message);
+    throw new ApiError(500, 'Something went wrong while fetching room details');
+  }
+});
+
+/**
  * @desc    Create a new room under a hotel
  * @route   POST /api/hotels/:id/rooms
  * @access  Private (Admin)
@@ -58,8 +111,7 @@ export const updateRoom = asyncHandler(async (req, res) => {
         ? Number(price)
         : undefined;
 
-    const hasTypeChanged =
-      normalizedType && normalizedType !== room.type;
+    const hasTypeChanged = normalizedType && normalizedType !== room.type;
     const hasPriceChanged =
       typeof normalizedPrice === 'number' &&
       normalizedPrice !== Number(room.price);
@@ -78,7 +130,10 @@ export const updateRoom = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, room, 'Room updated successfully!'));
   } catch (error) {
     console.error('Update Room Error:', error?.message);
-    throw new ApiError(500, 'Something went wrong while updating the room');
+    throw new ApiError(
+      500,
+      error?.message ?? 'Something went wrong while updating the room',
+    );
   }
 });
 
