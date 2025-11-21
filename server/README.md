@@ -115,6 +115,8 @@ README.md
 
 ## 🔌 **Primary API Endpoints**
 
+The API documentation is also hosted on Postman - [here](https://documenter.getpostman.com/view/49066397/2sB3WyLcUF)
+
 ### **Auth Routes**
 
 | Method | Endpoint                | Description                     |
