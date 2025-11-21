@@ -65,7 +65,7 @@ export const login = asyncHandler(async (req, res) => {
   const isPasswordCorrect = await user.isPasswordCorrect(password);
 
   if (!isPasswordCorrect) {
-    throw new ApiError(401, 'Password is incorrect!');
+    throw new ApiError(400, 'Password is incorrect!');
   }
 
   const { accessToken, refreshToken } =

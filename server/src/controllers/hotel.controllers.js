@@ -114,21 +114,35 @@ export const createHotel = asyncHandler(async (req, res) => {
 export const updateHotelDetails = asyncHandler(async (req, res) => {
   const hotelId = req.params?.id;
 
+  const { name, location } = req.body;
+
   try {
     const hotel = await Hotel.findByPk(hotelId);
 
     if (!hotel) throw new ApiError(404, 'Hotel not found');
 
-    const { name, location } = req.body;
-
-    if (!name?.trim() && !location?.trim())
+    if (!name?.trim() && !location?.trim()) {
       throw new ApiError(
         400,
         'At least one field (name or location) must be provided to update.',
       );
+    }
 
-    if (name.trim() !== '') hotel.name = name;
-    if (location.trim() !== '') hotel.location = location;
+    let isChanged = false;
+
+    if (name?.trim() && name.trim() !== hotel.name.trim()) {
+      hotel.name = name.trim();
+      isChanged = true;
+    }
+
+    if (location?.trim() && location.trim() !== hotel.location.trim()) {
+      hotel.location = location.trim();
+      isChanged = true;
+    }
+
+    if (!isChanged) {
+      throw new ApiError(400, 'No changes detected — hotel data is identical.');
+    }
 
     await hotel.save();
 
@@ -136,10 +150,10 @@ export const updateHotelDetails = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, hotel, 'Hotel details updated successfully!'));
   } catch (error) {
-    console.log(error?.message);
+    console.error(error.message);
     throw new ApiError(
-      error?.statusCode ?? 500,
-      error?.message ?? 'Something went wrong while updating the hotel details',
+      error.statusCode ?? 500,
+      error.message ?? 'Something went wrong while updating the hotel details',
     );
   }
 });

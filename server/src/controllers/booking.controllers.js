@@ -92,6 +92,9 @@ export const cancelBooking = asyncHandler(async (req, res) => {
 
     if (!booking) throw new ApiError(404, 'Booking not found');
 
+    if (booking.status == bookingStatus.cancelled)
+      throw new ApiError(409, 'Booking has already been cancelled!');
+
     booking.status = bookingStatus.cancelled;
 
     await booking.save();

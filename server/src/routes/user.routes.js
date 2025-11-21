@@ -28,12 +28,7 @@ router
 // hotel
 router
   .route('/hotels')
-  .get(
-    authMiddleware,
-    getHotelsValidations,
-    validateRequest,
-    hotelController.getAllHotels,
-  );
+  .get(getHotelsValidations, validateRequest, hotelController.getAllHotels);
 router
   .route('/hotels/:id')
   .get(
@@ -48,10 +43,20 @@ router
 // router.route('/rooms/:id').get();
 router
   .route('/hotels/:id/rooms')
-  .get(uuidValidations, validateRequest, roomController.getAllRoomDetails);
+  .get(
+    authMiddleware,
+    uuidValidations,
+    validateRequest,
+    roomController.getAllRoomDetails,
+  );
 router
   .route('/rooms/:id')
-  .get(uuidValidations, validateRequest, roomController.getARoomDetails);
+  .get(
+    authMiddleware,
+    uuidValidations,
+    validateRequest,
+    roomController.getARoomDetails,
+  );
 
 // bookings
 router
