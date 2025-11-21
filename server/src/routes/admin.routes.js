@@ -96,6 +96,15 @@ router
     adminController.updateUserToAdmin,
   );
 router
+  .route('/user/:id')
+  .patch(
+    authMiddleware,
+    roleMiddleware,
+    uuidValidation,
+    validateRequest,
+    adminController.updateAdminToUser,
+  );
+router
   .route('/admin/:id')
   .delete(
     authMiddleware,

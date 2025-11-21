@@ -142,7 +142,8 @@ README.md
 | ------ | --------------------------- | --------------- |
 | POST   | `/v1/admin`                 | Create admin    |
 | DELETE | `/v1/admin/:userId`         | Delete user     |
-| PATCH  | `/v1/admin/:adminId`        | Downgrade admin |
+| PATCH  | `/v1/admin/:adminId`        | Upgrade admin   |
+| PATCH  | `/v1/user/:adminId`         | Downgrade admin |
 | POST   | `/v1/hotels`                | Create hotel    |
 | PUT    | `/v1/hotels/:hotelId`       | Update hotel    |
 | DELETE | `/v1/hotels/:hotelId`       | Delete hotel    |

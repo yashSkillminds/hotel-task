@@ -81,3 +81,32 @@ export const deleteAdmin = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, 'Admin deleted successfully!'));
 });
+
+export const updateAdminToUser = asyncHandler(async (req, res) => {
+  const userId = req.params?.id;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) throw new ApiError(404, 'User not found');
+
+    if (user.role !== userRoles.admin)
+      throw new ApiError(400, 'User is not an admin');
+
+    user.role = userRoles.user;
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, { user }, 'Admin successfully downgraded to user'),
+      );
+  } catch (error) {
+    console.error(error?.message);
+    throw new ApiError(
+      500,
+      'Something went wrong while downgrading admin to user',
+    );
+  }
+});
