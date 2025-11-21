@@ -27,7 +27,7 @@ const User = sequelize.define(
       unique: true,
       validate: {
         isEmail: true,
-        len: [2, 255],
+        len: [3, 255],
       },
     },
     password: {
@@ -69,7 +69,10 @@ User.verifyJWT = async (token) => {
     return user;
   } catch (error) {
     console.error(error);
-    throw new ApiError(500, errorMessages.token_decode_failed);
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? errorMessages.token_decode_failed,
+    );
   }
 };
 

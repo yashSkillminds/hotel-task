@@ -46,7 +46,10 @@ export const getAllHotels = asyncHandler(async (req, res) => {
     );
   } catch (error) {
     console.log(error?.message);
-    throw new ApiError(500, 'Something went wrong while fetching hotels data');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while fetching hotels data',
+    );
   }
 });
 
@@ -64,8 +67,8 @@ export const getHotelDetails = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while fetching hotel details',
+      error?.statusCode ?? 500,
+      error?.statusCode ?? 'Something went wrong while fetching hotel details',
     );
   }
 });
@@ -81,6 +84,15 @@ export const createHotel = asyncHandler(async (req, res) => {
   const id = crypto.randomUUID();
 
   try {
+    const isHotelAlready = await Hotel.findOne({
+      where: {
+        name,
+        location,
+      },
+    });
+
+    if (isHotelAlready) throw new ApiError(409, 'Hotel already registered!');
+
     const hotel = await Hotel.create({
       id,
       name,
@@ -92,7 +104,10 @@ export const createHotel = asyncHandler(async (req, res) => {
       .json(new ApiResponse(201, hotel, 'Hotel registered successfully'));
   } catch (error) {
     console.log(error?.message);
-    throw new ApiError(500, 'Error while hotel registration');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Error while hotel registration',
+    );
   }
 });
 
@@ -123,8 +138,8 @@ export const updateHotelDetails = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while updating the hotel details',
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while updating the hotel details',
     );
   }
 });
@@ -148,8 +163,8 @@ export const deleteHotel = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while deleteing the hotel data',
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while deleteing the hotel data',
     );
   }
 });

@@ -4,6 +4,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import crypto from 'crypto';
+import { getHotelPagination } from '../utils/pagination.js';
 
 export const createAdmin = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -13,6 +14,15 @@ export const createAdmin = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   const id = crypto.randomUUID();
+
+  const isExistingUser = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  if (isExistingUser)
+    throw new ApiError(409, 'User with given email address already exists!');
 
   const admin = await User.create({
     id,
@@ -53,8 +63,8 @@ export const updateUserToAdmin = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while updating user to admin',
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while updating user to admin',
     );
   }
 });
@@ -105,8 +115,72 @@ export const updateAdminToUser = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while downgrading admin to user',
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while downgrading admin to user',
+    );
+  }
+});
+
+export const getAllAdmin = asyncHandler(async (req, res) => {
+  const { page, limit, offset } = getHotelPagination(req.query);
+
+  try {
+    const { count, rows } = await User.findAndCountAll({
+      where: { role: userRoles.admin },
+      limit,
+      offset,
+    });
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.status(200).json(
+      new ApiResponse(200, {
+        data: rows,
+        meta: {
+          totalItems: count,
+          totalPages,
+          pageSize: limit,
+          currentPage: page,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error(error?.message);
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while fetching admins data',
+    );
+  }
+});
+
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const { page, limit, offset } = getHotelPagination(req.query);
+
+  try {
+    const { count, rows } = await User.findAndCountAll({
+      where: { role: userRoles.user },
+      limit,
+      offset,
+    });
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.status(200).json(
+      new ApiResponse(200, {
+        data: rows,
+        meta: {
+          totalItems: count,
+          totalPages,
+          pageSize: limit,
+          currentPage: page,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error(error?.message);
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while fetching users data',
     );
   }
 });

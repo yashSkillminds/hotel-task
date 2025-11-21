@@ -16,7 +16,10 @@ export const generateAccessAndRefreshTokens = async (user) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(500, 'Something went wrong while generating the tokens');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while generating the tokens',
+    );
   }
 };
 
@@ -144,7 +147,7 @@ export const rotateToken = asyncHandler(async (req, res) => {
       );
   } catch (err) {
     throw new ApiError(
-      401,
+      err?.statusCode ?? 500,
       err.message || 'Something went wrong while token rotation',
     );
   }

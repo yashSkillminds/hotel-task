@@ -76,3 +76,5 @@ export const createBookingValidation = [
   checkInValidation,
   checkOutValidation,
 ];
+
+export const getUsersValidations = [pageValidator, limitValidator];

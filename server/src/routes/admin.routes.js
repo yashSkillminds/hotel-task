@@ -5,6 +5,7 @@ import * as adminController from '../controllers/admin.controllers.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { roleMiddleware } from '../middlewares/role.middleware.js';
 import {
+  getUsersValidations,
   hotelCreateValidations,
   hotelUpdateValidations,
   roomCreateValidations,
@@ -112,6 +113,24 @@ router
     uuidValidation,
     validateRequest,
     adminController.deleteAdmin,
+  );
+router
+  .route('/admins')
+  .get(
+    authMiddleware,
+    roleMiddleware,
+    getUsersValidations,
+    validateRequest,
+    adminController.getAllAdmin,
+  );
+router
+  .route('/users')
+  .get(
+    authMiddleware,
+    roleMiddleware,
+    getUsersValidations,
+    validateRequest,
+    adminController.getAllUsers,
   );
 
 export default router;

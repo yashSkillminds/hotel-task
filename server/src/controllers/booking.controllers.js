@@ -113,8 +113,8 @@ export const cancelBooking = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
-      500,
-      'Something went wrong while cancelling the booking',
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while cancelling the booking',
     );
   }
 });

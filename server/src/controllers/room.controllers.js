@@ -27,7 +27,10 @@ export const getAllRoomDetails = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, rooms, 'Rooms fetched successfully'));
   } catch (error) {
     console.error('Get all Room Details Error:', error?.message);
-    throw new ApiError(500, 'Something went wrong while fetching room details');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while fetching room details',
+    );
   }
 });
 
@@ -54,7 +57,10 @@ export const getARoomDetails = asyncHandler(async (req, res) => {
       );
   } catch (error) {
     console.error('Get a Room Details Error:', error?.message);
-    throw new ApiError(500, 'Something went wrong while fetching room details');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while fetching room details',
+    );
   }
 });
 
@@ -73,6 +79,15 @@ export const createRoom = asyncHandler(async (req, res) => {
 
     const id = crypto.randomUUID();
 
+    const isRoomAlreadyPresent = await Room.findOne({
+      where: {
+        hotel_id: hotelId,
+        room_number,
+      },
+    });
+
+    if (isRoomAlreadyPresent) throw new ApiError(409, 'Room already exists');
+
     const room = await Room.create({
       id,
       hotel_id: hotelId,
@@ -87,7 +102,10 @@ export const createRoom = asyncHandler(async (req, res) => {
       .json(new ApiResponse(201, room, 'Room created successfully'));
   } catch (error) {
     console.error('Create Room Error:', error?.message);
-    throw new ApiError(500, 'Something went wrong while creating the room');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while creating the room',
+    );
   }
 });
 
@@ -131,7 +149,7 @@ export const updateRoom = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Update Room Error:', error?.message);
     throw new ApiError(
-      500,
+      error?.statusCode ?? 500,
       error?.message ?? 'Something went wrong while updating the room',
     );
   }
@@ -160,6 +178,9 @@ export const deleteRoom = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, {}, 'Room deleted successfully!'));
   } catch (error) {
     console.error('Delete Room Error:', error?.message);
-    throw new ApiError(500, 'Something went wrong while deleting the room');
+    throw new ApiError(
+      error?.statusCode ?? 500,
+      error?.message ?? 'Something went wrong while deleting the room',
+    );
   }
 });
