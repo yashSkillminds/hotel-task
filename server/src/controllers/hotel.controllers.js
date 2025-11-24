@@ -5,8 +5,12 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { getHotelPagination } from '../utils/pagination.js';
 import crypto from 'crypto';
 
+import { Op } from 'sequelize';
+
 export const getAllHotels = asyncHandler(async (req, res) => {
   const { page, limit, offset } = getHotelPagination(req.query);
+
+  const { hotelName } = req.query;
 
   try {
     const ALLOWED_SORT_FIELDS = ['name', 'location'];
@@ -15,15 +19,22 @@ export const getAllHotels = asyncHandler(async (req, res) => {
     const sortBy = ALLOWED_SORT_FIELDS.includes(req.query.sortBy)
       ? req.query.sortBy
       : 'name';
+
     const sortOrder = ALLOWED_SORT_ORDERS.includes(
       req.query.order?.toUpperCase(),
     )
       ? req.query.order.toUpperCase()
       : 'ASC';
 
+    const where = {};
+    if (hotelName) {
+      where.name = { [Op.like]: `%${hotelName}%` };
+    }
+
     const { count, rows } = await Hotel.findAndCountAll({
-      limit: limit,
-      offset: offset,
+      where,
+      limit,
+      offset,
       order: [[sortBy, sortOrder]],
     });
 

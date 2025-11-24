@@ -15,6 +15,7 @@ import {
   roomPriceValidation,
   roomTypeValidation,
   roomNumberValidation,
+  hotelNameValidation,
 } from './validationRules.js';
 import { body } from 'express-validator';
 
@@ -48,6 +49,7 @@ export const getHotelsValidations = [
   limitValidator,
   sortByPaginationValidation,
   orderPaginationValidation,
+  hotelNameValidation,
 ];
 
 export const uuidValidations = [uuidValidation];

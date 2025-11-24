@@ -58,6 +58,11 @@ export const orderPaginationValidation = query('order')
   .isIn(['ASC', 'DESC', 'asc', 'desc'])
   .withMessage('Order must be either ASC or DESC');
 
+export const hotelNameValidation = query('hotelName')
+  .optional()
+  .isString()
+  .withMessage('Hotel name must be between 3 to 100 characters');
+
 export const uuidValidation = param('id')
   .isUUID()
   .withMessage('Invalid UUID format for ID');
