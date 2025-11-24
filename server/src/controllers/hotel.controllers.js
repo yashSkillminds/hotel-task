@@ -1,4 +1,6 @@
 import Hotel from '../models/hotel.models.js';
+import Room from '../models/room.models.js';
+import Booking from '../models/booking.models.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -6,11 +8,11 @@ import { getHotelPagination } from '../utils/pagination.js';
 import crypto from 'crypto';
 
 import { Op } from 'sequelize';
+import { bookingStatus } from '../constants/constants.js';
 
 export const getAllHotels = asyncHandler(async (req, res) => {
   const { page, limit, offset } = getHotelPagination(req.query);
-
-  const { hotelName } = req.query;
+  const { hotelName, location, roomType } = req.query;
 
   try {
     const ALLOWED_SORT_FIELDS = ['name', 'location'];
@@ -26,16 +28,34 @@ export const getAllHotels = asyncHandler(async (req, res) => {
       ? req.query.order.toUpperCase()
       : 'ASC';
 
-    const where = {};
+    const hotelWhere = {};
+
     if (hotelName) {
-      where.name = { [Op.like]: `%${hotelName}%` };
+      hotelWhere.name = { [Op.like]: `%${hotelName}%` };
+    }
+
+    if (location) {
+      hotelWhere.location = { [Op.like]: `%${location}%` };
+    }
+
+    const roomWhere = {};
+    if (roomType) {
+      roomWhere.type = { [Op.like]: `%${roomType}%` };
     }
 
     const { count, rows } = await Hotel.findAndCountAll({
-      where,
+      where: hotelWhere,
       limit,
       offset,
       order: [[sortBy, sortOrder]],
+      include: [
+        {
+          model: Room,
+          as: 'rooms',
+          where: Object.keys(roomWhere).length ? roomWhere : undefined,
+          required: !!roomType,
+        },
+      ],
     });
 
     const totalPages = Math.ceil(count / limit);
@@ -72,14 +92,37 @@ export const getHotelDetails = asyncHandler(async (req, res) => {
 
     if (!hotel) throw new ApiError(404, 'Hotel not found');
 
-    return res
-      .status(200)
-      .json(new ApiResponse(200, hotel, 'Hotel data fetched. successfully!'));
+    const targetDate = Date.now();
+
+    const totalBookings = await Booking.count({
+      where: {
+        check_out: { [Op.gte]: targetDate },
+        status: bookingStatus.booked,
+      },
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { hotel_id: hotelId },
+        },
+      ],
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          data: { hotel },
+          meta: { totalBookings },
+        },
+        'Hotel data fetched successfully!',
+      ),
+    );
   } catch (error) {
     console.log(error?.message);
     throw new ApiError(
       error?.statusCode ?? 500,
-      error?.statusCode ?? 'Something went wrong while fetching hotel details',
+      error?.message ?? 'Something went wrong while fetching hotel details',
     );
   }
 });

@@ -50,6 +50,8 @@ export const getHotelsValidations = [
   sortByPaginationValidation,
   orderPaginationValidation,
   hotelNameValidation,
+  roomTypeValidation.optional(),
+  locationValidator.optional(),
 ];
 
 export const uuidValidations = [uuidValidation];
