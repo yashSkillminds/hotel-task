@@ -1,0 +1,4362 @@
+{
+	"info": {
+		"_postman_id": "49066397-7711cff8-4fea-4b80-8e0e-e1bb253afc3b",
+		"name": "HOTEL API",
+		"description": "The **Hotel API** is a RESTful backend service that provides all the essential operations for managing users, authentication, hotel listings, rooms, and bookings within a hotel reservation platform. It is designed to be clean, scalable, and easy to integrate with any frontend — web, mobile, or third-party applications.\n\nThis API exposes well-structured versioned endpoints (`/v1`) and follows industry-standard authentication practices using **JWT tokens**. Both **regular users** and **administrators** can interact with the system, with permissions based on their roles.\n\n## **Key Capabilities**\n\n### **Authentication Flow**\n\n- User registration & login\n    \n- Secure login using JWT-based tokens\n    \n- Token rotation via refresh tokens\n    \n- Role-based access (User/Admin)\n    \n- Logout endpoint for session control\n    \n\n### **User Capabilities**\n\n- Fetch own profile details\n    \n- Update personal information\n    \n- Access hotel & room listings\n    \n- Create bookings and cancel existing ones\n    \n\n### **Admin Capabilities**\n\nAdmins have elevated permissions:\n\n- Create/update/delete hotels\n    \n- Create/update/delete rooms\n    \n- Create new admins\n    \n- Delete users or downgrade admin accounts\n    \n\n### **Hotel & Room Management**\n\n- Add new hotels\n    \n- Add rooms to hotels\n    \n- Update or delete existing hotels or rooms\n    \n- Fetch hotels and room details (public/user access)\n    \n\n### **Booking Management**\n\n- Create a booking\n    \n- Cancel a booking\n    \n- Ensure availability & reservation workflow\n    \n\n---\n\n## **Resource Groups**\n\n### **1\\. Auth**\n\nContains all authentication-related endpoints:\n\n- Register\n    \n- Login\n    \n- Logout\n    \n- Rotate Token\n    \n\n### **2\\. User**\n\nEndpoints used by a regular authenticated user:\n\n- Fetch own profile\n    \n- Update profile\n    \n- View hotel & room details\n    \n- Create & cancel bookings\n    \n\n### **3\\. Admin**\n\nEndpoints restricted to administrators:\n\n- Manage users (delete/upgrade/downgrade)\n    \n- Create admin\n    \n- Manage hotels (create/update/delete)\n    \n- Manage rooms (create/update/delete)\n    \n\n### **4\\. Test**\n\nContains the health-check or root endpoint:\n\n- Server test route (`GET /`)\n    \n\n## **Base URLs**\n\nYou can switch between environments using Postman:\n\n| Environment | URL |\n| --- | --- |\n| Production / Deployment | `{{url}}` |\n| Local Development | `http://localhost:3000/api` |\n\n---\n\n## **Authentication Header**\n\nMost endpoints require an Authorization header:\n\n```\nAuthorization: Bearer <access_token>\n\n ```\n\nPublic endpoints like Registration, Login, and Hotel Listing do not require tokens.\n\n---\n\n## **Response Format**\n\nThe API returns consistent JSON responses:\n\n### **Success Example**\n\n``` json\n{\n  \"message\": \"Operation successful\",\n  \"data\": { }\n}\n\n ```\n\n### **Error Example**\n\n``` json\n{\n  \"error\": \"Invalid credentials\",\n  \"status\": 401\n}\n\n ```\n\n## **Getting Started**\n\n1. Register a user or admin\n    \n2. Log in to get an access token\n    \n3. Add the token to Postman under **Authorization → Bearer Token**\n    \n4. Start using the User/Admin features depending on your role",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Admin Routes",
+			"item": [
+				{
+					"name": "Delete admin v1",
+					"id": "49066397-37a1d68a-7ba0-4357-aecf-d7f063e1ecd3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/admin/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b",
+									"description": "This is the user id"
+								}
+							]
+						},
+						"description": "Deletes a user or admin account by ID.\n\nid - should be UUID."
+					},
+					"response": [
+						{
+							"id": "49066397-5da3b4b8-86bf-41de-80a8-6a957744b036",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admin/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b",
+											"description": "This is the user id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "83"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"53-ZzgEB2KVcgr7a8ZUR6wmMyZJFFM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:33:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Admin deleted successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-2f41a99c-3b51-4f46-aefa-9b02a524005e",
+							"name": "404",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admin/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b",
+											"description": "This is the user id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3a-NNFINNCT+TvG+2KQzxcZokIi+eM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:32:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Admin not found\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Update user to admin v1",
+					"id": "49066397-fdc6f412-b841-4f17-9bd1-7b251c7476ea",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/admin/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+								}
+							]
+						},
+						"description": "Converts a user account to an admin account.\n\nid - should be UUID. (user id)"
+					},
+					"response": [
+						{
+							"id": "49066397-1291ed92-f68d-42d9-a45c-e3f8f7f3e86d",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admin/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "369"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"171-lRKgMr8APdp/kNgSWlXZEcyaWhY\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:33:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"2bbd5072-b483-4e07-ab51-278f8a77b04b\",\n        \"name\": \"YK\",\n        \"email\": \"yk@example.com\",\n        \"password\": \"$2b$10$xgTkB2y.EmIav35Ir9anwOrWB2ObgMFU.YIIcGOfdwpzOKiLNOeX.\",\n        \"role\": \"admin\",\n        \"refreshToken\": \"\",\n        \"createdAt\": \"2025-11-21T08:24:39.000Z\",\n        \"updatedAt\": \"2025-11-21T08:33:52.860Z\",\n        \"deletedAt\": null\n    },\n    \"message\": \"User role updated successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-f34636ab-6b96-493f-bdbf-4bfd31912306",
+							"name": "404",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admin/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-nJ7FS15o6ssL8ZX8uT7O6DkqXJI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:37:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"User not found\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Update admin to user v1",
+					"id": "49066397-04adfc49-05b8-41e0-abba-ed3b42961528",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/user/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+								}
+							]
+						},
+						"description": "Converts a admin account to regular user account.\n\nid - should be UUID. (user id)"
+					},
+					"response": [
+						{
+							"id": "49066397-e994b698-69b1-4030-95d2-2f7c4fa551d9",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/user/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "383"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"17f-vh2Ctx+WNHJ7Yaejtwia84PwM4w\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:33:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": \"2bbd5072-b483-4e07-ab51-278f8a77b04b\",\n            \"name\": \"YK\",\n            \"email\": \"yk@example.com\",\n            \"password\": \"$2b$10$xgTkB2y.EmIav35Ir9anwOrWB2ObgMFU.YIIcGOfdwpzOKiLNOeX.\",\n            \"role\": \"user\",\n            \"refreshToken\": \"\",\n            \"createdAt\": \"2025-11-21T08:24:39.000Z\",\n            \"updatedAt\": \"2025-11-21T08:33:48.386Z\",\n            \"deletedAt\": null\n        }\n    },\n    \"message\": \"Admin successfully downgraded to user\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-ef148cba-0ef1-412d-8f04-3e803830301e",
+							"name": "404",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/user/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2bbd5072-b483-4e07-ab51-278f8a77b04b"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-nJ7FS15o6ssL8ZX8uT7O6DkqXJI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:37:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"User not found\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Admin v1",
+					"id": "49066397-cbd0f7d6-797d-485d-a347-a1c5bf1e4ec9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Yash Khalkar\",\n    \"email\": \"yash@gmail.com\",\n    \"password\": \"Yash@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"admin"
+							]
+						},
+						"description": "Creates a new admin account. Requires an existing admin token.\n\n``` json\n{\n  \"name\": string,      // character length should be 2 to 100\n  \"email\": string,\n  \"password\": string   // Min - 1 upper, 1 lower, 1 numeric, 1 special character\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-c44177d2-ce94-488d-94c2-85e58d3e87cd",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Yash Khalkar\",\n    \"email\": \"yash@gmail.com\",\n    \"password\": \"Yash@1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/admin",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "367"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"16f-GaYlfTIGLKuyZxK2ylKo1ycU9Vo\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:55:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"user\": {\n            \"refreshToken\": \"\",\n            \"id\": \"5ae9ee60-49d4-4b9c-a1e3-c9269930968c\",\n            \"name\": \"Yash Khalkar\",\n            \"email\": \"yash@gmail.com\",\n            \"password\": \"$2b$10$fJoV64Dh3TLggNTzu9bboelvczSZTA9TfTM5MDaGmqbbpHRG3pyGG\",\n            \"role\": \"admin\",\n            \"updatedAt\": \"2025-11-21T08:55:08.876Z\",\n            \"createdAt\": \"2025-11-21T08:55:08.876Z\"\n        }\n    },\n    \"message\": \"Admin created successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-49f82fee-f88c-462f-b7eb-9f5f83280ebd",
+							"name": "409",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Yash Khalkar\",\n    \"email\": \"yash@gmail.com\",\n    \"password\": \"Yash@1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/admin",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admin"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "88"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"58-mctn+gGS+iUzgQYyLxWfk4t4O8g\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:45:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"User with given email address already exists!\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Hotel v1",
+					"id": "49066397-149dd723-f5ba-4714-a818-25a6d5364bd0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Hotel\",\n    \"location\": \"Nashik\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels"
+							]
+						},
+						"description": "Creates a new hotel entry. Only admins can access this.\n\n``` json\n{\n    \"name\": string,      // (min: , max: 100)\n    \"location\": string   // (min: , max: 100)  \n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-e8f26757-0ca7-4fe5-86bf-7e5f3b4ee08f",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"New Hotel\",\n    \"location\": \"Nashik\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "296"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"128-0qp5d5Owjbu7vs0OIt1/iLSiFiM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:56:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"6e2a954c-4eb4-4788-8c30-aed5e0d7249d\",\n        \"name\": \"New Hotel\",\n        \"location\": \"Nashik\",\n        \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n        \"updatedAt\": \"2025-11-21T08:56:47.038Z\",\n        \"createdAt\": \"2025-11-21T08:56:47.038Z\"\n    },\n    \"message\": \"Hotel registered successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-d6d10598-d81b-4a8c-a115-d6133fdc06ce",
+							"name": "409",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"New Hotel\",\n    \"location\": \"Nashik\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-+LhUdP7wtEtGEfX/Q7MyiLf0geg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:01:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Hotel already registered!\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Hotel v1",
+					"id": "49066397-3b2720a7-b077-4a74-95eb-39e7ca741367",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hotel New\",\n    \"location\": \"Nashik\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+								}
+							]
+						},
+						"description": "Updates hotel details. Admin only. Fields are optional, editing only one works\n\nid - should be UUID. (hotel id)\n\n``` json\n{\n    \"name\": string,      // (min: , max: 100) Optional\n    \"location\": string   // (min: , max: 100) Optional\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-7a27beff-d8e0-4e3d-b890-b0bb8cbcc240",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Hotel New\",\n    \"location\": \"Nashik\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "302"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"12e-YW2Cmw8w489HdZb8KDr1Q3nWLvg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:56:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n        \"name\": \"Hotel New\",\n        \"location\": \"Nashik\",\n        \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n        \"createdAt\": \"2025-11-21T08:55:38.000Z\",\n        \"updatedAt\": \"2025-11-21T08:56:34.770Z\"\n    },\n    \"message\": \"Hotel details updated successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-eeb999a2-ae7c-444c-b16b-0dd184a1383b",
+							"name": "400",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Hotel New\",\n    \"location\": \"Nashik\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-k7w2fc6OloqB83JU8S8fInARKJg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:06:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"No changes detected — hotel data is identical.\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Hotel v1",
+					"id": "49066397-c3816686-0d0f-48c8-955e-d222e974fb6a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6e2a954c-4eb4-4788-8c30-aed5e0d7249d"
+								}
+							]
+						},
+						"description": "Deletes a hotel. Admin only.\n\nid - should be UUID. (Hotel id)"
+					},
+					"response": [
+						{
+							"id": "49066397-24bc8b05-05cc-4c96-bce8-18eb1a679d18",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6e2a954c-4eb4-4788-8c30-aed5e0d7249d"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "83"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"53-K6MJKnamWoUyBsHr/674qpr4T60\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:57:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Hotel deleted successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-eed01fde-07ab-4c58-800c-1ef2afaae614",
+							"name": "404",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6e2a954c-4eb4-4788-8c30-aed5e0d7249d"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "59"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3b-HnjGWs/TwiG80KXpNcAq/JtiFFU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:06:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Hotel not found!\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Room v1",
+					"id": "49066397-2b4e76e0-4169-4e90-a1b0-09d154718bda",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"room_number\": \"2\",\n    \"type\": \"suite\",  // single, double, suite\n    \"price\": \"25000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels/:id/rooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels",
+								":id",
+								"rooms"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+								}
+							]
+						},
+						"description": "Adds a new room for the specified hotel.\n\nid - should be UUID. (Hotel id)\n\n``` json\n{\n    \"room_number\": string,\n    \"type\": enum (string),  // allowed values - single, double, suite\n    \"price\": string\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-d80dc032-1529-4981-bbb1-e0145c9cce6d",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_number\": \"2\",\n    \"type\": \"suite\",  // single, double, suite\n    \"price\": \"25000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "319"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"13f-Yngy+JwZXjvAwXbHdTdpgM8n/lA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:07:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"405b44b0-b158-4363-a8a5-94bb116ddec6\",\n        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n        \"room_number\": \"2\",\n        \"type\": \"suite\",\n        \"price\": 25000,\n        \"is_available\": true,\n        \"updatedAt\": \"2025-11-21T09:07:54.350Z\",\n        \"createdAt\": \"2025-11-21T09:07:54.350Z\"\n    },\n    \"message\": \"Room created successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-bd71e1f4-2f8a-4818-88ce-4692d03ad18b",
+							"name": "409",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_number\": \"2\",\n    \"type\": \"suite\",  // single, double, suite\n    \"price\": \"25000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "62"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3e-itW0gZNSf0te3xkeEobbudSl1XA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:07:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Room already exists\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Room v1",
+					"id": "49066397-2b81b9e7-ad9d-43f2-9b86-b3f3373d39bc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"double\",  // single, double, suite\n    \"price\": \"5000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/rooms/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "405b44b0-b158-4363-a8a5-94bb116ddec6"
+								}
+							]
+						},
+						"description": "Updates room details. Admin only.\n\nid - should be UUID. (Room id)\n\n``` json\n{\n    \"type\": enum,  // allowed values - single, double, suite\n    \"price\": string\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-59c22547-0ec7-4295-8e13-0dcba948c7b9",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"double\",  // single, double, suite\n    \"price\": \"50000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "321"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"141-PYMmu/7PUz2wqxAc3p1zUK5XJ5k\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:05:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"76c15d61-ddc1-4a3b-a418-e6b19206b6dd\",\n        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n        \"room_number\": 2,\n        \"type\": \"double\",\n        \"price\": \"50000\",\n        \"is_available\": true,\n        \"createdAt\": \"2025-11-21T09:04:56.000Z\",\n        \"updatedAt\": \"2025-11-21T09:05:44.609Z\"\n    },\n    \"message\": \"Room updated successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-3a4ee1b9-2bed-46c3-9570-4f06eb24c8a6",
+							"name": "401",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"double\",  // single, double, suite\n    \"price\": \"50000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:19:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						},
+						{
+							"id": "49066397-8a9f171e-38d0-4f2d-b206-d7b16e6653e1",
+							"name": "404",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"double\",  // single, double, suite\n    \"price\": \"50000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-4iMqeGgxCzi/PkKmmvUVVBRxf8E\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:20:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Room not found\",\n    \"errors\": []\n}"
+						},
+						{
+							"id": "49066397-ca4266ce-153b-4ec9-b8ed-5662f9d607e9",
+							"name": "400",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"double\",  // single, double, suite\n    \"price\": \"5000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "405b44b0-b158-4363-a8a5-94bb116ddec6"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "80"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"50-fTKbbBJ+4BRls8leForkbbnGUVI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:22:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"No changes detected in update request\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Room v1",
+					"id": "49066397-c52f2017-ab32-4bb4-8e29-1dc579d70dd1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/rooms/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+								}
+							]
+						},
+						"description": "Delete a room. Admin only.\n\nid - should be UUID. (Room id)"
+					},
+					"response": [
+						{
+							"id": "49066397-b2551d82-a773-49aa-a1cc-070e4694b029",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "82"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"52-h7Ej9qn6qwv9GS7pqMDdX/cUw5U\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:05:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Room deleted successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-d75e998d-1911-4157-a702-e30759744635",
+							"name": "404",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "76c15d61-ddc1-4a3b-a418-e6b19206b6dd"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-4iMqeGgxCzi/PkKmmvUVVBRxf8E\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:07:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Room not found\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "ADMINS v1",
+					"id": "49066397-77cbbd5a-3579-400a-82fa-b8f2b4da942f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/admins",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"admins"
+							]
+						},
+						"description": "Get all the admins available in the application."
+					},
+					"response": [
+						{
+							"id": "49066397-9d038faa-6aeb-4b68-bfef-5d96dab2e4fa",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admins",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admins"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "910"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"38e-OT9WzR+ghE7Oqo80PVRk/C03JLo\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:06:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"name\": \"ABC\",\n                \"email\": \"abc@example.com\",\n                \"password\": \"$2b$10$TIIZImC546YjoMydEBxmPeUYQ0eSFz3TU01rYhfInIn5Ja8wLoT5u\",\n                \"role\": \"admin\",\n                \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsImlhdCI6MTc2MzcxMzk2MCwiZXhwIjoxNzY0MzE4NzYwfQ.FDdvksOqxVFMZ7B2JKBWQZgdgtSMxF_GehVfe4rRBwk\",\n                \"createdAt\": \"2025-11-21T08:22:29.000Z\",\n                \"updatedAt\": \"2025-11-21T08:32:40.000Z\",\n                \"deletedAt\": null\n            },\n            {\n                \"id\": \"5ae9ee60-49d4-4b9c-a1e3-c9269930968c\",\n                \"name\": \"Yash Khalkar\",\n                \"email\": \"yash@gmail.com\",\n                \"password\": \"$2b$10$fJoV64Dh3TLggNTzu9bboelvczSZTA9TfTM5MDaGmqbbpHRG3pyGG\",\n                \"role\": \"admin\",\n                \"refreshToken\": \"\",\n                \"createdAt\": \"2025-11-21T08:55:08.000Z\",\n                \"updatedAt\": \"2025-11-21T08:55:08.000Z\",\n                \"deletedAt\": null\n            }\n        ],\n        \"meta\": {\n            \"totalItems\": 2,\n            \"totalPages\": 1,\n            \"pageSize\": 10,\n            \"currentPage\": 1\n        }\n    },\n    \"message\": \"Success!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-7fba16f8-3c95-4ab7-8844-80ed08fe258d",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/admins",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"admins"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:19:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "USERS v1",
+					"id": "49066397-81007814-98a5-4507-8d72-c6cc311a6a04",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "Get all the users available in the application."
+					},
+					"response": [
+						{
+							"id": "49066397-ee650670-9081-4fd7-8ddf-7d07bfd4814f",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "142"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8e-qiT/l2qyvIYJCgPiBcxxSLqibf4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:53:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": [],\n        \"meta\": {\n            \"totalItems\": 0,\n            \"totalPages\": 0,\n            \"pageSize\": 10,\n            \"currentPage\": 1\n        }\n    },\n    \"message\": \"Success!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-2e83d2a3-1edb-429b-a469-8f6153b4c413",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:18:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				}
+			],
+			"id": "49066397-621e95ca-a3e4-43bf-8f67-cb557ce51622",
+			"description": "Admin Only api routes. Requires admin token."
+		},
+		{
+			"name": "Auth Routes",
+			"item": [
+				{
+					"name": "Register V1",
+					"id": "49066397-0a0ddff1-37a1-47a2-80f4-3fa69bb15247",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"YK\",\n    \"email\": \"yk@example.com\",\n    \"password\": \"Yk@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Creates a new user account. This is a public endpoint and does not require authentication.\n\n``` json\n{\n    \"name\": string,\n    \"email\": string,\n    \"password\": string  // Min length - 6 (1 upper, 1 lower, 1 special, 1 numeric character)\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-94d48e1d-d5ec-4bf5-96bc-a68d708e5729",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"YK\",\n    \"email\": \"yk@example.com\",\n    \"password\": \"Yk@1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/auth/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "345"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"159-AqmWaCkaLfmHfEs+P0H7+Q0qdxo\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:24:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"role\": \"user\",\n        \"refreshToken\": \"\",\n        \"id\": \"2bbd5072-b483-4e07-ab51-278f8a77b04b\",\n        \"name\": \"YK\",\n        \"email\": \"yk@example.com\",\n        \"password\": \"$2b$10$xgTkB2y.EmIav35Ir9anwOrWB2ObgMFU.YIIcGOfdwpzOKiLNOeX.\",\n        \"updatedAt\": \"2025-11-21T08:24:39.498Z\",\n        \"createdAt\": \"2025-11-21T08:24:39.498Z\"\n    },\n    \"message\": \"User created successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-ee927993-9e24-4350-806d-937630a3acbb",
+							"name": "409",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"YK\",\n    \"email\": \"yk@example.com\",\n    \"password\": \"Yk@1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/auth/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "88"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"58-mctn+gGS+iUzgQYyLxWfk4t4O8g\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:08:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"User with given email address already exists!\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Login V1",
+					"id": "49066397-ea63cabb-6298-433e-afeb-287082f7167a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abc@example.com\",\n    \"password\": \"Abc@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticates the user and generates both access and refresh tokens.\n\n``` json\n{\n    \"email\": string,\n    \"password\": string  // Min length - 6 (1 upper, 1 lower, 1 special, 1 numeric character)\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-5213d435-41fe-420e-9181-bce9b9752c15",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"abc@example.com\",\n    \"password\": \"Abc@1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzcxMzk2MCwiZXhwIjoxNzYzODAwMzYwfQ.K-HkpwechNqW3oyanTXD1eM8-KlaVva2T4ssWTC6Kjg; Path=/; HttpOnly"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsImlhdCI6MTc2MzcxMzk2MCwiZXhwIjoxNzY0MzE4NzYwfQ.FDdvksOqxVFMZ7B2JKBWQZgdgtSMxF_GehVfe4rRBwk; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "714"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2ca-C+isE7BW6scb5TiB2JUE99+djuk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:32:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n            \"name\": \"ABC\",\n            \"email\": \"abc@example.com\",\n            \"role\": \"admin\",\n            \"createdAt\": \"2025-11-21T08:22:29.000Z\",\n            \"updatedAt\": \"2025-11-21T08:32:40.954Z\",\n            \"deletedAt\": null\n        },\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzcxMzk2MCwiZXhwIjoxNzYzODAwMzYwfQ.K-HkpwechNqW3oyanTXD1eM8-KlaVva2T4ssWTC6Kjg\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsImlhdCI6MTc2MzcxMzk2MCwiZXhwIjoxNzY0MzE4NzYwfQ.FDdvksOqxVFMZ7B2JKBWQZgdgtSMxF_GehVfe4rRBwk\"\n    },\n    \"message\": \"User logged in successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-bbb7f08f-f5af-4a40-bf10-d61b3cff0212",
+							"name": "400",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"abc@example.com\",\n    \"password\": \"Abc@134\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"41-EXTPUo2oLv5hWRg2F1RBcUhGiQM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:18:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Password is incorrect!\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout V1",
+					"id": "49066397-006b7036-5837-4ffb-9f21-60b82bc04feb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/auth/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logs out the authenticated user by invalidating their refresh token."
+					},
+					"response": [
+						{
+							"id": "49066397-0721956d-dd4d-48fd-8094-98e483687757",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/auth/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"55-IPfDwJqD5Su0NP17c6aVzJBjRu0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:32:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"User logged out successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-d1275568-7b69-4be1-9324-d5527b0d2630",
+							"name": "401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/auth/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:17:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Rotate Tokens V1",
+					"id": "49066397-c81a29ec-0d51-476b-91bc-ec6d38c83358",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/auth/rotate-token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"rotate-token"
+							]
+						},
+						"description": "Refresh expired access token using the refresh token."
+					},
+					"response": [
+						{
+							"id": "49066397-cb93893d-1a36-46d4-b691-33436df96d00",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/auth/rotate-token",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"rotate-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzEzMzgxLCJleHAiOjE3NjM3OTk3ODF9.CvpRejs9qbF6jQ4K15N8fWXCRwwhFk8yom-UDnzUN4s; Path=/; HttpOnly"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsImlhdCI6MTc2MzcxMzM4MSwiZXhwIjoxNzY0MzE4MTgxfQ.mh4Mezv6NqMMeFyuIEW6QgXzWI9LSBHlK2bicj8oFu0; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "509"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1fd-ZsIWmPTfUeeZ5+gPCXyzYfNt9fE\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:23:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzEzMzgxLCJleHAiOjE3NjM3OTk3ODF9.CvpRejs9qbF6jQ4K15N8fWXCRwwhFk8yom-UDnzUN4s\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZTVhZWU0LWFiYWUtNDQ1Yi1hNjllLTczM2ZkMDhhNTM3ZiIsImlhdCI6MTc2MzcxMzM4MSwiZXhwIjoxNzY0MzE4MTgxfQ.mh4Mezv6NqMMeFyuIEW6QgXzWI9LSBHlK2bicj8oFu0\"\n    },\n    \"message\": \"Tokens rotated successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-41406b20-9bf5-4df2-af91-22bb2fdb8b95",
+							"name": "401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/auth/rotate-token",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"rotate-token"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:17:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				}
+			],
+			"id": "49066397-85d26c36-4c4b-4b2b-8779-d2f4ab423736",
+			"description": "Authentication routes for user/admin register, login, logout and refreshing access and refresh tokens."
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Test",
+					"id": "49066397-cbae5ccc-eb7e-47d8-839b-217fc6d655d1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000"
+						},
+						"description": "Basic endpoint to verify if server is running."
+					},
+					"response": [
+						{
+							"id": "49066397-2b41480b-90b2-407b-8485-7b7f693c6008",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "6"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6-aTQsXDnlrl8Ad67MMsD4GBH7gZM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:23:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "Hello!"
+						}
+					]
+				}
+			],
+			"id": "49066397-93dc1c9c-0981-4f50-9abf-5de9c6ebc215",
+			"description": "Test routes for basic testing of the server."
+		},
+		{
+			"name": "User Routes",
+			"item": [
+				{
+					"name": "ME v1",
+					"id": "49066397-d76cd48d-d6ed-4cce-8890-d23db0b889c8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/user/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"me"
+							]
+						},
+						"description": "Returns details of the currently authenticated user."
+					},
+					"response": [
+						{
+							"id": "49066397-21778071-73ed-432f-941d-345c83e1d6d6",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/user/me",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "280"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"118-A5S6oWE5UFsAk3n3bj3sEpHQqnw\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 08:23:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n        \"name\": \"ABC\",\n        \"email\": \"abc@example.com\",\n        \"role\": \"user\",\n        \"createdAt\": \"2025-11-21T08:22:29.000Z\",\n        \"updatedAt\": \"2025-11-21T08:23:01.000Z\",\n        \"deletedAt\": null\n    },\n    \"message\": \"User data retrieved successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-23331cbe-6e2c-4341-bbf1-8ddf48b4eb2f",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/user/me",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"me"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:13:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Me Update v1",
+					"id": "49066397-bef5eb19-669b-4f84-b137-16bced525af2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ABCD\"\n    // \"password\": \"Abc@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/user/update",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"update"
+							]
+						},
+						"description": "Updates the profile details of the authenticated user.\n\n``` json\n{\n    \"name\": string,       // Optional\n    \"password\": string    // Optional, Min length - 6 (1 upper, 1 lower, 1 special, 1 numeric character)\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-759def67-1eb1-41cd-8c3d-9fdad225bb2e",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"ABCD\"\n    // \"password\": \"Abc@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/user/update",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "284"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"11c-+3ofGTyf4algJzNd+Jpj3v2S2eA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:06:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"user\": {\n            \"id\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n            \"name\": \"ABCD\",\n            \"email\": \"abc@example.com\",\n            \"role\": \"admin\",\n            \"createdAt\": \"2025-11-21T08:22:29.000Z\",\n            \"updatedAt\": \"2025-11-21T09:06:46.144Z\",\n            \"deletedAt\": null\n        }\n    },\n    \"message\": \"User updated successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-177e9889-4f8e-42ae-8154-58494960d7a5",
+							"name": "400",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"ABCD\"\n    // \"password\": \"Abc@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/user/update",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"update"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "80"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"50-fTKbbBJ+4BRls8leForkbbnGUVI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:09:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"No changes detected in update request\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all hotels",
+					"id": "49066397-6753a871-0477-4d0d-bdcd-96f654fb3b5c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/hotels?location=Nashik&hotelName=New&roomType=suite&page=1&limit=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "Nashik"
+								},
+								{
+									"key": "hotelName",
+									"value": "New"
+								},
+								{
+									"key": "roomType",
+									"value": "suite"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Fetch list of all hotels. Public route available for all users."
+					},
+					"response": [
+						{
+							"id": "49066397-0fe7fcf2-2cbe-46dc-9617-2b22c79e4aa5",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/hotels",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "380"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"17c-MTOFPme7i/fu2EMHebbskAvt0c0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:07:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                \"name\": \"Hotel New\",\n                \"location\": \"Nashik\",\n                \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"createdAt\": \"2025-11-21T08:55:38.000Z\",\n                \"updatedAt\": \"2025-11-21T08:56:34.000Z\"\n            }\n        ],\n        \"meta\": {\n            \"totalItems\": 1,\n            \"totalPages\": 1,\n            \"pageSize\": 10,\n            \"currentPage\": 1\n        }\n    },\n    \"message\": \"Hotels data fetched successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-80697fd8-8f24-45ea-80a0-8cdc46dba315",
+							"name": "Success with Query",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/hotels?location=Nashik&hotelName=New",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": "Nashik"
+										},
+										{
+											"key": "hotelName",
+											"value": "New"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1099"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44b-wN72lPnxn9anjK4cWyPUBBmwWXg\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 24 Nov 2025 06:00:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                \"name\": \"Hotel New\",\n                \"location\": \"Nashik\",\n                \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"createdAt\": \"2025-11-21T08:55:38.000Z\",\n                \"updatedAt\": \"2025-11-21T08:56:34.000Z\",\n                \"rooms\": [\n                    {\n                        \"id\": \"405b44b0-b158-4363-a8a5-94bb116ddec6\",\n                        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                        \"room_number\": 2,\n                        \"type\": \"double\",\n                        \"price\": \"5000\",\n                        \"is_available\": false,\n                        \"createdAt\": \"2025-11-21T09:07:54.000Z\",\n                        \"updatedAt\": \"2025-11-24T04:40:25.000Z\"\n                    },\n                    {\n                        \"id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n                        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                        \"room_number\": 1,\n                        \"type\": \"suite\",\n                        \"price\": \"25000\",\n                        \"is_available\": false,\n                        \"createdAt\": \"2025-11-21T09:04:50.000Z\",\n                        \"updatedAt\": \"2025-11-21T09:08:51.000Z\"\n                    }\n                ]\n            },\n            {\n                \"id\": \"bcea4aab-9587-46ac-807e-785373327d36\",\n                \"name\": \"New Hotel\",\n                \"location\": \"Nashik\",\n                \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"createdAt\": \"2025-11-21T09:45:37.000Z\",\n                \"updatedAt\": \"2025-11-21T09:45:37.000Z\",\n                \"rooms\": []\n            }\n        ],\n        \"meta\": {\n            \"totalItems\": 3,\n            \"totalPages\": 1,\n            \"pageSize\": 10,\n            \"currentPage\": 1\n        }\n    },\n    \"message\": \"Hotels data fetched successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-51b5d52b-39c2-4125-ac83-ea43c3b35e9f",
+							"name": "Successful All Queries",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/hotels?location=Nashik&hotelName=New&roomType=suite&page=1&limit=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": "Nashik"
+										},
+										{
+											"key": "hotelName",
+											"value": "New"
+										},
+										{
+											"key": "roomType",
+											"value": "suite"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "631"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"277-Fdg6SB/89p5CZUdZNYydXq3LvO0\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 24 Nov 2025 06:21:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                \"name\": \"Hotel New\",\n                \"location\": \"Nashik\",\n                \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"createdAt\": \"2025-11-21T08:55:38.000Z\",\n                \"updatedAt\": \"2025-11-21T08:56:34.000Z\",\n                \"rooms\": [\n                    {\n                        \"id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n                        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                        \"room_number\": 1,\n                        \"type\": \"suite\",\n                        \"price\": \"25000\",\n                        \"is_available\": false,\n                        \"createdAt\": \"2025-11-21T09:04:50.000Z\",\n                        \"updatedAt\": \"2025-11-21T09:08:51.000Z\"\n                    }\n                ]\n            }\n        ],\n        \"meta\": {\n            \"totalItems\": 1,\n            \"totalPages\": 1,\n            \"pageSize\": 1,\n            \"currentPage\": 1\n        }\n    },\n    \"message\": \"Hotels data fetched successfully!\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Room Details v1",
+					"id": "49066397-ac7a60ff-3da1-4ca3-9cf0-f7397340934c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/rooms/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7d0e5759-aa87-47c2-9f7c-75f6a2560b89"
+								}
+							]
+						},
+						"description": "Returns details of a specific room belonging to a specific hotel.\n\nid - should be UUID. (Room id)"
+					},
+					"response": [
+						{
+							"id": "49066397-8ddc1eae-08e3-45e4-b628-e792a0a33eb5",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "7d0e5759-aa87-47c2-9f7c-75f6a2560b89"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "350"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15e-weTLXpfbUlpBmIhvYMokC3KWi94\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:08:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n        \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n        \"room_number\": 1,\n        \"type\": \"suite\",\n        \"price\": \"25000\",\n        \"is_available\": true,\n        \"createdAt\": \"2025-11-21T09:04:50.000Z\",\n        \"updatedAt\": \"2025-11-21T09:04:50.000Z\"\n    },\n    \"message\": \"All Room details of the given Hotel fetched successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-add93074-12b7-43bb-a487-6eb7d0d8dfe2",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/rooms/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"rooms",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "7d0e5759-aa87-47c2-9f7c-75f6a2560b89"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:14:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "All Room Details v1",
+					"id": "49066397-3fd2dba6-6c30-46f9-a090-7f52fd9c0ec7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels/:id/rooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels",
+								":id",
+								"rooms"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+								}
+							]
+						},
+						"description": "Returns all rooms belonging to a specific hotel.\n\nid - should be UUID. (Hotel id)"
+					},
+					"response": [
+						{
+							"id": "49066397-2915be1d-9423-4725-87a9-f1163d467a40",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "563"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"233-RXWezpfl/n5CnrzZt96pztfvNxs\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:08:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n            \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n            \"room_number\": 1,\n            \"type\": \"suite\",\n            \"price\": \"25000\",\n            \"is_available\": true,\n            \"createdAt\": \"2025-11-21T09:04:50.000Z\",\n            \"updatedAt\": \"2025-11-21T09:04:50.000Z\"\n        },\n        {\n            \"id\": \"405b44b0-b158-4363-a8a5-94bb116ddec6\",\n            \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n            \"room_number\": 2,\n            \"type\": \"suite\",\n            \"price\": \"25000\",\n            \"is_available\": true,\n            \"createdAt\": \"2025-11-21T09:07:54.000Z\",\n            \"updatedAt\": \"2025-11-21T09:07:54.000Z\"\n        }\n    ],\n    \"message\": \"Rooms fetched successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-27c4a818-f0e3-47e6-aaa9-90872c409516",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:15:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Hotel Details v1",
+					"id": "49066397-080fb3c9-9d82-4bd2-99fc-f8feb09ceca0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/hotels/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"hotels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+								}
+							]
+						},
+						"description": "Returns all rooms belonging to a specific hotel.\n\nid - should be UUID. (Hotel id)"
+					},
+					"response": [
+						{
+							"id": "49066397-83881bab-0a49-4ab7-9443-05970bed0944",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "563"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"233-RXWezpfl/n5CnrzZt96pztfvNxs\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:08:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n            \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n            \"room_number\": 1,\n            \"type\": \"suite\",\n            \"price\": \"25000\",\n            \"is_available\": true,\n            \"createdAt\": \"2025-11-21T09:04:50.000Z\",\n            \"updatedAt\": \"2025-11-21T09:04:50.000Z\"\n        },\n        {\n            \"id\": \"405b44b0-b158-4363-a8a5-94bb116ddec6\",\n            \"hotel_id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n            \"room_number\": 2,\n            \"type\": \"suite\",\n            \"price\": \"25000\",\n            \"is_available\": true,\n            \"createdAt\": \"2025-11-21T09:07:54.000Z\",\n            \"updatedAt\": \"2025-11-21T09:07:54.000Z\"\n        }\n    ],\n    \"message\": \"Rooms fetched successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-fb6f7f55-55d2-47cd-8866-0a38747734b4",
+							"name": "401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id/rooms",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id",
+										"rooms"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-qDhomB9fAGs0ovuuJ2+2u919BY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:15:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Access token missing\",\n    \"errors\": []\n}"
+						},
+						{
+							"id": "49066397-49a23eeb-1f39-4821-9207-1e7754c89c6e",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/hotels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"hotels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "133146fd-bb41-48e5-8d9b-54d72afb8851"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "345"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"159-cxVTUl8C/dw2eBfUDe8cFtIPVZo\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 24 Nov 2025 06:11:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"data\": {\n            \"hotel\": {\n                \"id\": \"133146fd-bb41-48e5-8d9b-54d72afb8851\",\n                \"name\": \"Hotel New\",\n                \"location\": \"Nashik\",\n                \"createdBy\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n                \"createdAt\": \"2025-11-21T08:55:38.000Z\",\n                \"updatedAt\": \"2025-11-21T08:56:34.000Z\"\n            }\n        },\n        \"meta\": {\n            \"totalBookings\": 3\n        }\n    },\n    \"message\": \"Hotel data fetched successfully!\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Booking v1",
+					"id": "49066397-3530fb22-49e5-45d8-835a-303688b577ac",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"room_id\": \"405b44b0-b158-4363-a8a5-94bb116ddec6\",\n    \"check_in\": \"2025-11-24T14:30:00Z\",\n    \"check_out\": \"2025-11-25T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/bookings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"bookings"
+							]
+						},
+						"description": "Create a hotel room booking. User must be logged in.\n\n``` json\n{\n    \"room_id\": string, (UUID)\n    \"check_in\": date string,\n    \"check_out\": date,\n    \"status\": enum - string     // payment status [pending, completed, refunded]\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-7980c340-42fb-461c-b0bd-1d82a5e4118a",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n    \"check_in\": \"2025-11-24T14:30:00Z\",\n    \"check_out\": \"2025-11-25T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/bookings",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"bookings"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "398"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18e-VW8AVHvRpZY1OeEEAIgGswSYFn0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:09:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"8b2e84a6-671a-442a-9de4-7eb79ccb9627\",\n        \"user_id\": \"eee5aee4-abae-445b-a69e-733fd08a537f\",\n        \"room_id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n        \"check_in\": \"2025-11-24T14:30:00.000Z\",\n        \"check_out\": \"2025-11-25T14:30:00.000Z\",\n        \"status\": \"booked\",\n        \"updatedAt\": \"2025-11-21T09:09:50.085Z\",\n        \"createdAt\": \"2025-11-21T09:09:50.085Z\"\n    },\n    \"message\": \"Booking created successfully\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-11d8d1e5-f1cb-4b23-8623-7ce0bb44bb49",
+							"name": "400",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\": \"7d0e5759-aa87-47c2-9f7c-75f6a2560b89\",\n    \"check_in\": \"2025-11-24T14:30:00Z\",\n    \"check_out\": \"2025-11-25T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/bookings",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"bookings"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "88"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"58-8PA+QAq0fAOPWfG/lhAyKauCKYI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:09:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Room is already booked for the selected dates\",\n    \"errors\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Cancel Booking v1",
+					"id": "49066397-5cb77a98-80a2-4861-a28c-668d673cb4e0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"room_id\": \"5da443f4-c791-4665-a188-e40dff8186b5\",\n    \"check_in\": \"2025-11-24T12:30:00Z\",\n    \"check_out\": \"2025-11-24T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/bookings/:id/cancel",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"bookings",
+								":id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6d9b0f98-e2f9-4323-affa-df67f08a3c2c"
+								}
+							]
+						},
+						"description": "Cancel a user's existing booking.\n\nid - should be UUID. (Booking id)\n\n``` json\n{\n    \"room_id\": string,  // UUID\n    \"check_in\": date string,\n    \"check_out\": date string,\n    \"status\": enum (string)     // payment status [pending, completed, refunded]\n}\n\n ```"
+					},
+					"response": [
+						{
+							"id": "49066397-abcae518-fef3-4455-843b-024670e3e4b9",
+							"name": "Successful",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\": \"5da443f4-c791-4665-a188-e40dff8186b5\",\n    \"check_in\": \"2025-11-24T12:30:00Z\",\n    \"check_out\": \"2025-11-24T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/bookings/:id/cancel",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"bookings",
+										":id",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6d9b0f98-e2f9-4323-affa-df67f08a3c2c"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"57-ljOALQvrS1h6Hgc1OvKcyhqnS9w\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 09:09:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Booking cancelled successfully!\",\n    \"success\": true\n}"
+						},
+						{
+							"id": "49066397-9ec1f682-4d6d-48fb-8e54-6a334350986e",
+							"name": "409",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\": \"5da443f4-c791-4665-a188-e40dff8186b5\",\n    \"check_in\": \"2025-11-24T12:30:00Z\",\n    \"check_out\": \"2025-11-24T14:30:00Z\",\n    \"status\": \"completed\"     // payment status [pending, completed, refunded]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/bookings/:id/cancel",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"bookings",
+										":id",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6d9b0f98-e2f9-4323-affa-df67f08a3c2c"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "78"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4e-YBPY2LPiB0oPWsMrL1KVg2WGzcg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 21 Nov 2025 10:12:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Booking has already been cancelled!\",\n    \"errors\": []\n}"
+						}
+					]
+				}
+			],
+			"id": "49066397-5fcd3601-31cb-4c64-9bf9-00a300f289da",
+			"description": "Consists all the user facing apis which the client application interacts with while interacting with the application."
+		}
+	]
+}
